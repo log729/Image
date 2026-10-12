@@ -17,3 +17,8 @@ CREATE TABLE IF NOT EXISTS imginfo (
 	`time` DATE
 );
 
+
+-- Every image view looks up / bumps imginfo by url and logs into tgimglog; without these D1 scanned the whole table
+-- each time (D1 bills rows read). CREATE INDEX IF NOT EXISTS is safe to re-run on an existing database.
+CREATE INDEX IF NOT EXISTS idx_imginfo_url ON imginfo(url);
+CREATE INDEX IF NOT EXISTS idx_tgimglog_url ON tgimglog(url);
